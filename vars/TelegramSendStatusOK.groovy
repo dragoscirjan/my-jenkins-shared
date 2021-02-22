@@ -1,6 +1,6 @@
 
 
-def TelegramSendStatusOK(token, chatId, env) {
+def call(def token, def chatId, def env) {
     sh """
         curl -s -X POST https://api.telegram.org/bot${token}/sendMessage \
             -d chat_id=${chatId} \
