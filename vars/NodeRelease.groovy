@@ -17,7 +17,7 @@ def call(def gitCredentialsId, Map args) {
       passwordVariable: 'GIT_TOKEN'
     )]) {
       def command = """
-        ${preRun};
+        ${preRun}
         git remote rm origin;
         git remote add origin https://${GIT_USER}:${GIT_TOKEN}@github.com/mists-aside/tempjs.git;
         git fetch;
@@ -31,12 +31,11 @@ def call(def gitCredentialsId, Map args) {
         ${packageManager} publish;
       """
 
-      echo command
-      // try {
-      //   sh command
-      // } catch (Exception ex) {
-      //   powershell command
-      // }
+      try {
+        sh command
+      } catch (Exception ex) {
+        powershell command
+      }
     }
   }
 
