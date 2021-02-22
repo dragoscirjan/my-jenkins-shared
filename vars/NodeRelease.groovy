@@ -6,7 +6,7 @@ def call(def gitCredentialsId, Map args) {
 
 // def releaseArgs = 'patch', def packageManager = 'npm', def preRun = ''
 
-  def releaseArgs = "${args.releaseArgs}  --no-git.requireUpstream --git.commitArgs=--no-verify"
+  def releaseArgs = "${args.releaseArgs ? args.releaseArgs : 'patch'}  --no-git.requireUpstream --git.commitArgs=--no-verify"
   def packageManager = "${args.packageManager}"
   def preRun = "${args.preRun}"
 
@@ -27,7 +27,7 @@ def call(def gitCredentialsId, Map args) {
         git checkout .;
         git status;
         ${packageManager} install;
-        ${packageManager} run release -- ${localReleaseArgs};
+        ${packageManager} run release -- ${releaseArgs};
         ${packageManager} publish;
       """
 
