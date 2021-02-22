@@ -1,4 +1,4 @@
 
 def call(def token, def chatId) {
-    TelegramSendStatus('Failed', token, chatId)
+    TelegramSendStatus('Fail', token, chatId)
 }
