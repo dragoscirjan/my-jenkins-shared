@@ -1,11 +1,12 @@
 
 def call(def status, def token, def chatId) {
-    def icon = ':yellow_heart:'
+    // https://unicode.org/emoji/charts/full-emoji-list.html
+    def icon = ''
     if (status.toLowerCase() == 'ok') {
-        icon = ':green_heart:'
+        icon = '🎉'
     }
     if (status.toLowerCase() == 'fail') {
-        icon = ':broken_heart:'
+        icon = '🌧'
     }
 
     def message = """-------------------------------------
