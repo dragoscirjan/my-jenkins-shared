@@ -1,7 +1,7 @@
 
 
 
-def call(def releaseArgs, def packageManager = 'npm') {
+def call(def releaseArgs = 'patch', def packageManager = 'npm') {
   def commitMessage = GitLastCommitMessage()
 
   releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
