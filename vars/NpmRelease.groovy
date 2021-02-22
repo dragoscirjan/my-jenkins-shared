@@ -1,12 +1,12 @@
 
 
 
-def call(Map body = [:]) {
+def call(Map args = [:]) {
   def commitMessage = GitLastCommitMessage()
 
-  def releaseArgs = body?.releaseArgs ? body?.releaseArgs : 'patch'
-  def packageManager = body?.packageManager ? body?.packageManager : 'npm'
-  def preRun = body?.preRun ? body?.preRun : ''
+  def releaseArgs = args?.releaseArgs ? args?.releaseArgs : 'patch'
+  def packageManager = args?.packageManager ? args?.packageManager : 'npm'
+  def preRun = args?.preRun ? args?.preRun : ''
 
   releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
 
