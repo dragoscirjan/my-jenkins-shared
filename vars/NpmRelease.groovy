@@ -26,13 +26,12 @@ def call(def releaseArgs = 'patch', def packageManager = 'npm') {
         ${packageManager} run release -- ${releaseArgs};
         ${packageManager} publish;
       """
-      echo command;
 
-      // try {
-      //   sh command
-      // } catch (Exception ex) {
-      //   powershell command
-      // }
+      try {
+        sh command
+      } catch (Exception ex) {
+        powershell command
+      }
     }
   }
 
