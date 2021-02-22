@@ -1,8 +1,12 @@
 
 
 
-def call(def releaseArgs = 'patch', def packageManager = 'npm') {
+def call(def body) {
   def commitMessage = GitLastCommitMessage()
+
+  body.releaseArgs = body.releaseArgs ? body.releaseArgs : 'patch'
+  body.packageManager = body.packageManager ? body.packageManager : 'npm'
+  body.preRun = body.preRun ? body.preRun : ''
 
   releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
 
@@ -13,7 +17,7 @@ def call(def releaseArgs = 'patch', def packageManager = 'npm') {
       passwordVariable: 'GIT_TOKEN'
     )]) {
       def command = """
-        set -ex;
+        ${body.preRun};
         git remote rm origin;
         git remote add origin https://${GIT_USER}:${GIT_TOKEN}@github.com/mists-aside/tempjs.git;
         git fetch;
@@ -22,9 +26,9 @@ def call(def releaseArgs = 'patch', def packageManager = 'npm') {
         git pull origin ${env.BRANCH_NAME};
         git checkout .;
         git status;
-        ${packageManager} install;
-        ${packageManager} run release -- ${releaseArgs};
-        ${packageManager} publish;
+        ${body.packageManager} install;
+        ${body.packageManager} run release -- ${body.releaseArgs};
+        ${body.packageManager} publish;
       """
 
       try {
