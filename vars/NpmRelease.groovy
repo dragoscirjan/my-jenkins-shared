@@ -8,7 +8,7 @@ def call(def body) {
   body.packageManager = body.packageManager ? body.packageManager : 'npm'
   body.preRun = body.preRun ? body.preRun : ''
 
-  releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
+  body.releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
 
   if (commitMessage.indexOf("chore: release v") < 0) {
     withCredentials([usernamePassword(
@@ -31,11 +31,12 @@ def call(def body) {
         ${body.packageManager} publish;
       """
 
-      try {
-        sh command
-      } catch (Exception ex) {
-        powershell command
-      }
+      echo command
+      // try {
+      //   sh command
+      // } catch (Exception ex) {
+      //   powershell command
+      // }
     }
   }
 
