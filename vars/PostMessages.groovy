@@ -1,7 +1,7 @@
 
 
 def TelegramSendStatusOK(token, chatId) {
-    script{
+    // script{
         sh """
             curl -s -X POST https://api.telegram.org/bot${token}/sendMessage \
                 -d chat_id=${chatId} \
@@ -17,5 +17,5 @@ Branch:      ${env.BRANCH_NAME}\n\
 --------------------------------------\n\
 "
         """
-    }
+    // }
 }
