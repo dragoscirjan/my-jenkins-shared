@@ -4,9 +4,9 @@
 def call(def body) {
   def commitMessage = GitLastCommitMessage()
 
-  def releaseArgs = body.releaseArgs ? body.releaseArgs : 'patch'
-  def packageManager = body.packageManager ? body.packageManager : 'npm'
-  def preRun = body.preRun ? body.preRun : ''
+  def releaseArgs = body?.releaseArgs ? body?.releaseArgs : 'patch'
+  def packageManager = body?.packageManager ? body?.packageManager : 'npm'
+  def preRun = body?.preRun ? body?.preRun : ''
 
   releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
 
