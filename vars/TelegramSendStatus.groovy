@@ -1,5 +1,5 @@
 
-def call(def telegramTokenCredentialId, def telegramChatIdCredentialId, def message) {
+def call(def telegramTokenCredentialId, def telegramChatIdCredentialId, def status) {
     // https://unicode.org/emoji/charts/full-emoji-list.html
     def icon = ''
     if (status.toLowerCase() == 'ok') {
