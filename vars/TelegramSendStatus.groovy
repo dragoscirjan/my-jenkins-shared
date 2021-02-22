@@ -1,9 +1,9 @@
 
 def call(def status, def token, def chatId) {
-    if (status.lower() == 'ok') {
+    if (status.toLowerCase() == 'ok') {
         status = "<span style='color: green;'>${status}</status>"
     }
-    if (status.lower() == 'failed') {
+    if (status.toLowerCase() == 'failed') {
         status = "<span style='color: red;'>${status}</status>"
     }
 
