@@ -1,7 +1,7 @@
 
 
 
-def call(def releaseArgs = 'patch', def packageManager = 'npm', def preRun = '', credentialsId = '') {
+def call(def releaseArgs = 'patch', def packageManager = 'npm', def preRun = '', def credentialsId) {
   def commitMessage = GitLastCommitMessage()
 
   releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
