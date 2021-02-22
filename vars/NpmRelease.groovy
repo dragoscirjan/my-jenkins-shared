@@ -1,7 +1,7 @@
 
 
 
-def call(def body) {
+def call(Map body = [:]) {
   def commitMessage = GitLastCommitMessage()
 
   def releaseArgs = body?.releaseArgs ? body?.releaseArgs : 'patch'
