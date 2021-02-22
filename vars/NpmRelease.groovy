@@ -4,7 +4,7 @@
 def call(def gitCredentialsId, def releaseArgs = 'patch', def packageManager = 'npm', def preRun = '') {
   def commitMessage = GitLastCommitMessage()
 
-  releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
+  def localReleaseArgs = releaseArgs + ' --no-git.requireUpstream --git.commitArgs=--no-verify'
 
   if (commitMessage.indexOf("chore: release v") < 0) {
     withCredentials([usernamePassword(
@@ -23,7 +23,7 @@ def call(def gitCredentialsId, def releaseArgs = 'patch', def packageManager = '
         git checkout .;
         git status;
         ${packageManager} install;
-        ${packageManager} run release -- ${releaseArgs};
+        ${packageManager} run release -- ${localReleaseArgs};
         ${packageManager} publish;
       """
 
