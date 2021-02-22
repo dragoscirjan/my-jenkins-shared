@@ -1,26 +1,9 @@
 def call() {
-  def useShell = sh
+  def command = "git log -1 --oneline --pretty=\"format:%s\""
+
   try {
-    sh "echo"
+    return sh(script: command, returnStdout: true).trim()
   } catch (Exception ex) {
-    useShell = powershell
+    return powershell(script: command, returnStdout: true).trim()
   }
-
-  return useShell(
-    script: "git log -1 --oneline --pretty=\"format:%s\"",
-    returnStdout: true
-  ).trim()
-
-
-  // try {
-  //   return sh(
-  //     script: "git log -1 --oneline --pretty=\"format:%s\"",
-  //     returnStdout: true
-  //   ).trim()
-  // } catch (Exception ex) {
-  //   return powershell(
-  //     script: "git log -1 --oneline --pretty=\"format:%s\"",
-  //     returnStdout: true
-  //   ).trim()
-  // }
 }
