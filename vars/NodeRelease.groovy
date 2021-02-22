@@ -31,11 +31,12 @@ def call(def gitCredentialsId, Map args) {
         ${packageManager} publish;
       """
 
-      try {
-        sh command
-      } catch (Exception ex) {
-        powershell command
-      }
+      echo command
+      // try {
+      //   sh command
+      // } catch (Exception ex) {
+      //   powershell command
+      // }
     }
   }
 
