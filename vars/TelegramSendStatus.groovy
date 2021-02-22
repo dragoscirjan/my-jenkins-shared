@@ -1,14 +1,14 @@
 
 def call(def status, def token, def chatId) {
-    def message = """-------------------------------------\n
-Jenkins build: *${status.toUpperCase()}!*\n
--------------------------------------\n
-Repository:    ${env.JOB_NAME}\n
-Branch:        ${env.BRANCH_NAME}\n
-*Commit Msg:*\n\
-...TODO:\n
+    def message = """-------------------------------------
+Jenkins build: *${status.toUpperCase()}!*
+-------------------------------------
+Repository:    ${env.JOB_NAME}
+Branch:        ${env.BRANCH_NAME}
+*Commit Msg:*\
+...TODO:
 
-[Job Log here](${env.BUILD_URL}/consoleText)\n
+[Job Log here](${env.BUILD_URL}/consoleText)
 --------------------------------------"""
 
     TelegramSend(message, token, chatId)
