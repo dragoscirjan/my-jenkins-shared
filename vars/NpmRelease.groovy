@@ -1,14 +1,14 @@
 
 
 
-def call(def releaseArgs = 'patch', def packageManager = 'npm', def preRun = '') {
+def call(def releaseArgs = 'patch', def packageManager = 'npm', def preRun = '', credentialsId = '') {
   def commitMessage = GitLastCommitMessage()
 
   releaseArgs += ' --no-git.requireUpstream --git.commitArgs=--no-verify'
 
   if (commitMessage.indexOf("chore: release v") < 0) {
     withCredentials([usernamePassword(
-      credentialsId: '52e756f6-5625-41fb-bde9-ead983f84629',
+      credentialsId: credentialsId,
       usernameVariable: 'GIT_USER',
       passwordVariable: 'GIT_TOKEN'
     )]) {
