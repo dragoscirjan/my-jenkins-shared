@@ -7,8 +7,8 @@ def call(def gitCredentialsId, Map args) {
 // def releaseArgs = 'patch', def packageManager = 'npm', def preRun = ''
 
   def releaseArgs = "${args.releaseArgs ? args.releaseArgs : 'patch'}  --no-git.requireUpstream --git.commitArgs=--no-verify"
-  def packageManager = "${args.packageManager}"
-  def preRun = "${args.preRun}"
+  def packageManager = "${args.packageManager ? args.packageManager : 'npm'}"
+  def preRun = "${args.preRun ? args.preRun : ''}"
 
   if (commitMessage.indexOf("chore: release v") < 0) {
     withCredentials([usernamePassword(
