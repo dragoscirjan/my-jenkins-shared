@@ -1,5 +1,5 @@
 
-def call(def status, def token, def chatId) {
+def call(def telegramTokenCredentialId, def telegramChatIdCredentialId, def message) {
     // https://unicode.org/emoji/charts/full-emoji-list.html
     def icon = ''
     if (status.toLowerCase() == 'ok') {
@@ -20,5 +20,5 @@ Branch:        ${env.BRANCH_NAME}
 [Job Log here](${env.BUILD_URL}/consoleText)
 --------------------------------------"""
 
-    TelegramSend(message, token, chatId)
+    TelegramSend(telegramTokenCredentialId, telegramChatIdCredentialId, [message: message])
 }

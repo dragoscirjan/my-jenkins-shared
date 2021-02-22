@@ -1,4 +1,4 @@
 
-def call(def token, def chatId) {
-    TelegramSendStatus('OK', token, chatId)
+def call(def telegramTokenCredentialId, def telegramChatIdCredentialId) {
+    TelegramSendStatus(telegramTokenCredentialId, telegramChatIdCredentialId, 'OK')
 }
