@@ -113,6 +113,12 @@ npm publish;
 """
     }
 
+    if (args.debug) {
+      echo command
+
+      return
+    }
+
     try {
         sh """
 set -ex
