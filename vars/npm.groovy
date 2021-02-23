@@ -38,7 +38,7 @@
  * }
  * </code>
  */
-def npmRelease(Map args) {
+def release(Map args) {
 
     if (!args.gitUrl) {
         throw new Exception('gitUrl not mentioned')
