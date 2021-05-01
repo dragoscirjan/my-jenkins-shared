@@ -30,7 +30,7 @@ export NVM_DIR="\$HOME/.nvm";
 nvm install ${version};
 nvm use ${version};
 
-set -ex
+set -ex;
 ${command}
 """
 }
@@ -40,10 +40,10 @@ def runPowershell(String command, String version = env ? env.NODE_VERSION_DEFAUL
     throw new Exception("No node version mentioned");
   }
   powershell """
-nvm install ${version}
-nvm use ${version}
-Set-PSDebug -Trace 1;
+nvm install ${version};
+nvm use ${version};
 
+Set-PSDebug -Trace 1;
 ${command}
 """
 }
