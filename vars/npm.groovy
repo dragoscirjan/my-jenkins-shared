@@ -123,6 +123,7 @@ npm publish;
         sh """
 set -ex
 ${command}
+set +x
 """
     /* groovylint-disable-next-line CatchException */
     } catch (Exception ex) {
