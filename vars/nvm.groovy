@@ -19,7 +19,7 @@ nvm --version
   }
 }
 
-def sh(String command, String version = env ? env.NODE_VERSION_DEFAULT : null) {
+def runSh(String command, String version = env ? env.NODE_VERSION_DEFAULT : null) {
   if (!version) {
     throw new Exception("No node version mentioned");
   }
@@ -35,7 +35,7 @@ set +x
 """
 }
 
-def powershell(String command, String version = env ? env.NODE_VERSION_DEFAULT : null) {
+def runPowershell(String command, String version = env ? env.NODE_VERSION_DEFAULT : null) {
   if (!version) {
     throw new Exception("No node version mentioned");
   }
