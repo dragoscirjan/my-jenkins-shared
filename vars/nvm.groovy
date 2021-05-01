@@ -1,13 +1,11 @@
 
 def info() {
   try {
-    echo """
-set -ex
+    sh """
 export NVM_DIR="\$HOME/.nvm";
 [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh";
 
 nvm --version;
-set +x
 """
     /* groovylint-disable-next-line CatchException */
   } catch (Exception ex) {
