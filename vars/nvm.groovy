@@ -23,14 +23,15 @@ def runSh(String command, String version = env ? env.NODE_VERSION_DEFAULT : null
     throw new Exception("No node version mentioned");
   }
   sh """
-export NVM_DIR="\$HOME/.nvm"
-[ -s "\$NVM_DIR/nvm.sh" ] && \\. "\$NVM_DIR/nvm.sh"
+set +ex;
+export NVM_DIR="\$HOME/.nvm";
+[ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh";
 
-nvm install ${version}
-nvm use ${version}
+nvm install ${version};
+nvm use ${version};
+
 set -ex
 ${command}
-set +x
 """
 }
 
