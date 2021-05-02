@@ -1,3 +1,4 @@
+import groovy.json.JsonOutput
 
 // https://testdriven.io/blog/getting-telegram-notifications-from-travis-ci/
 def send(def telegramTokenCredentialId, def telegramChatIdCredentialId, Map args) {
