@@ -31,12 +31,12 @@ def sendStatus(def telegramTokenCredentialId, def telegramChatIdCredentialId, de
     icon = '🌧'
   }
 
+//  Params:        ${JsonOutput.toJson(params ? params : [])}
     def message = """-------------------------------------
 ${icon} Jenkins build: *${status.toUpperCase()}!*
 -------------------------------------
 Repository:    ${env.JOB_NAME}
 Branch:        ${env.BRANCH_NAME}
-Params:        ${JsonOutput.toJson(params ? params : [])}
 *Commit Msg:*
 ...TODO:
 
