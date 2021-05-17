@@ -18,7 +18,7 @@ def install(Map options) {
 
   command = "${options.manager} install"
 
-  jobName=env.JOB_NAME.replaceAll('/', '_')
+  jobName=env.JOB_NAME.replaceAll(/[^\w]/, '_')
 
   if (options.cache) {
     try {
@@ -26,19 +26,19 @@ def install(Map options) {
       command = """
 hash=\$(cat ./package.json | sha256sum | awk -F ' ' '{ print \$1 }')
 archive_path=\"/tmp/${jobName}_\${hash}.tgz\"
-if [ -f \"\$archive_path\" ]; then tar -xzf \$archive_path; fi
+if [ -f \"\$archive_path\" ]; then tar -xzf \"\$archive_path\"; fi
 ${command}
-tar -czf ./node_modules \$archive_path
+tar -czf ./node_modules \"\$archive_path\"
 """
     } catch (Exception e) {
       command = """
 \$hash = (Get-FileHash -Path .\\package.json).Hash
 \$archivePath = \"${jobName}_\${env:TEMP}\${hash}.zip\"
-if (Test-Path -Path \$archivePath -PathType Leaf) {
- Expand-Archive -Path \$archivePath -DestinationPath .
+if (Test-Path -Path \"\$archivePath\" -PathType Leaf) {
+ Expand-Archive -Path \"\$archivePath\" -DestinationPath .
 }
 ${command}
-Compress-Archive -Path .\\node_modules -DestinationPath \$archivePath
+Compress-Archive -Path .\\node_modules -DestinationPath \"\$archivePath\"
 """
     }
   }
