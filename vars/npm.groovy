@@ -24,11 +24,26 @@ def install(Map options) {
     try {
       sh "uname"
       command = """
+# clear files older than 15 days
+find /tmp -type f -iname "${jobName}_*" -mtime +14 -exec rm {} \\
+
+# find old hash
+oldHash=
+if [ -f '/tmp/${jobName}' ]; then oldHash=\$(cat '/tmp/${jobName}'); fi
+
+# calculate present hash & unzip archive if it exists
 hash=\$(cat ./package.json | sha256sum | awk -F ' ' '{ print \$1 }')
 archive_path=\"/tmp/${jobName}_\${hash}.tgz\"
 if [ -f \"\$archive_path\" ]; then tar -xzf \"\$archive_path\" .; fi
+
+# run install command
 ${command}
-tar -czf \"\$archive_path\" ./node_modules
+
+# make new archive if old hash is different than new one
+if [ \"\$oldHash\" != \"\$hash\" ]; then
+  tar -czf \"\$archive_path\" ./node_modules
+  echo "\$hash" > '/tmp/${jobName}'
+fi
 """
     } catch (Exception e) {
       command = """
