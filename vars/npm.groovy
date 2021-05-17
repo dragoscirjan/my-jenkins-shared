@@ -25,7 +25,7 @@ def install(Map options) {
       sh "uname"
       command = """
 # clear files older than 15 days
-find /tmp -type f -iname "${jobName}_*" -mtime +14 -exec rm {} \\
+find /tmp -type f -iname \"${jobName}_*\" -mtime +14 -exec rm {} \\
 
 # find old hash
 oldHash=
@@ -42,7 +42,7 @@ ${command}
 # make new archive if old hash is different than new one
 if [ \"\$oldHash\" != \"\$hash\" ]; then
   tar -czf \"\$archive_path\" ./node_modules
-  echo "\$hash" > '/tmp/${jobName}'
+  echo \"\$hash\" > '/tmp/${jobName}'
 fi
 """
     } catch (Exception e) {
