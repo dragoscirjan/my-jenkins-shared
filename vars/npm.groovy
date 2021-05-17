@@ -2,10 +2,10 @@
 /**
  * This method should help you run npm (yarn/pnpm) install and adding a cache layer.
  *
- * @param manager Node manager to use for installing pakcages. Default: 'npm'.
- * @param cache   Whether to use node_modules cache or not. Default: true.
- * @param useNvm  Whether to use nvm or not. Default: false.
- * @param nvmVersion  Version to use for nvm.runSh() method.
+ * @param manager     Node manager to use for installing pakcages. Default: 'npm'.
+ * @param cache       Whether to use node_modules cache or not. Default: true.
+ * @param useNvm      Whether to use nvm or not. Default: false.
+ * @param nodeVersion Nodejs version to use for nvm.runSh() method.
  */
 def install(Map options) {
   if (!options.manager) {
