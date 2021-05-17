@@ -26,9 +26,9 @@ def install(Map options) {
       command = """
 hash=\$(cat ./package.json | sha256sum | awk -F ' ' '{ print \$1 }')
 archive_path=\"/tmp/${jobName}_\${hash}.tgz\"
-if [ -f \"\$archive_path\" ]; then tar -xzf \"\$archive_path\"; fi
+if [ -f \"\$archive_path\" ]; then tar -xzf \"\$archive_path\" .; fi
 ${command}
-tar -czf ./node_modules \"\$archive_path\"
+tar -czf \\"\\$archive_path\\" ./node_modules
 """
     } catch (Exception e) {
       command = """
