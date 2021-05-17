@@ -4,6 +4,8 @@
  *
  * @param manager Node manager to use for installing pakcages. Default: 'npm'.
  * @param cache   Whether to use node_modules cache or not. Default: true.
+ * @param useNvm  Whether to use nvm or not. Default: false.
+ * @param nvmVersion  Version to use for nvm.runSh() method.
  */
 def install(Map options) {
   if (!options.manager) {
@@ -41,19 +43,10 @@ Compress-Archive -Path .\\node_modules -DestinationPath \$archivePath
     }
   }
 
-  try {
-    sh """
-set -ex
-${command}
-set +x
-"""
-    /* groovylint-disable-next-line CatchException */
-  } catch (Exception ex) {
-    powershell """
-Set-PSDebug -Trace 1;
-${command}
-Set-PSDebug -Trace 0;
-"""
+  if (!options.useNvm) {
+    utils.runSh command
+  } else {
+    nvm.runSh command, options.nodeVersion
   }
 }
 
