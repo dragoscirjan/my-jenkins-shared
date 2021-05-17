@@ -1,5 +1,64 @@
 
 /**
+ * This method should help you run npm (yarn/pnpm) install and adding a cache layer.
+ *
+ * @param manager Node manager to use for installing pakcages. Default: 'npm'.
+ * @param cache   Whether to use node_modules cache or not. Default: true.
+ */
+def install(Map options) {
+  if (!options.manager) {
+    options.manager = 'npm'
+  }
+
+  if (!options.find({ it -> it.key == 'cache' })) {
+    options.cache = true
+  }
+
+  command = "${options.manager} install"
+
+  jobName=env.JOB_NAME.replaceAll('/', '_')
+
+  if (options.cache) {
+    try {
+      sh "uname"
+      command = """
+hash=\$(cat ./package.json | sha256sum | awk -F ' ' '{ print \$1 }')
+archive_path=\"/tmp/${jobName}_\${hash}.tgz\"
+if [ -f \"\$archive_path\" ]; then tar -xzf \$archive_path; fi
+${command}
+tar -czf ./node_modules \$archive_path
+"""
+    } catch (Exception e) {
+      command = """
+\$hash = (Get-FileHash -Path .\\package.json).Hash
+\$archivePath = \"${jobName}_\${env:TEMP}\${hash}.zip\"
+if (Test-Path -Path \$archivePath -PathType Leaf) {
+ Expand-Archive -Path \$archivePath -DestinationPath .
+}
+${command}
+Compress-Archive -Path .\\node_modules -DestinationPath \$archivePath
+"""
+    }
+  }
+
+  try {
+    sh """
+set -ex
+${command}
+set +x
+"""
+    /* groovylint-disable-next-line CatchException */
+  } catch (Exception ex) {
+    powershell """
+Set-PSDebug -Trace 1;
+${command}
+Set-PSDebug -Trace 0;
+"""
+  }
+}
+
+
+/**
  * This method should help you make automated module releases.
  *
  * NOTE:
