@@ -28,20 +28,22 @@ def install(Map options) {
 find /tmp -type f -iname \"${jobName}_*\" -mtime +14 | xargs rm -rf
 
 # find old hash
-oldHash=
-if [ -f '/tmp/${jobName}' ]; then oldHash=\$(cat '/tmp/${jobName}'); fi
+old_hash=
+if [ -f '/tmp/${jobName}' ]; then old_hash=\$(cat '/tmp/${jobName}'); fi
 
 # calculate present hash & unzip archive if it exists
 hash=\$(cat ./package.json | sha256sum | awk -F ' ' '{ print \$1 }')
 archive_path=\"/tmp/${jobName}_\${hash}.tgz\"
+old_archive_path=\"/tmp/${jobName}_\${old_hash}.tgz\"
 if [ -f \"\$archive_path\" ]; then tar -xzf \"\$archive_path\" .; fi
 
 # run install command
 ${command}
 
 # make new archive if old hash is different than new one
-if [ \"\$oldHash\" != \"\$hash\" ]; then
+if [ \"\$old_hash\" != \"\$hash\" ]; then
   tar -czf \"\$archive_path\" ./node_modules
+  rm -rf \"\$old_archive_path\"
   echo \"\$hash\" > '/tmp/${jobName}'
 fi
 """
