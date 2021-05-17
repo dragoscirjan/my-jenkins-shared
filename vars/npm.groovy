@@ -25,7 +25,7 @@ def install(Map options) {
       sh "uname"
       command = """
 # clear files older than 15 days
-find /tmp -type f -iname \"${jobName}_*\" -mtime +14 -exec rm {} \\
+find /tmp -type f -iname \"${jobName}_*\" -mtime +14 | xargs rm -rf
 
 # find old hash
 oldHash=
