@@ -4,6 +4,7 @@
  *
  * @param manager     Node manager to use for installing pakcages. Default: 'npm'.
  * @param cache       Whether to use node_modules cache or not. Default: true.
+ * @param cacheKey    Cache unique key to be used in the cache file name. Default: ''.
  * @param useNvm      Whether to use nvm or not. Default: false.
  * @param nodeVersion Nodejs version to use for nvm.runSh() method.
  */
@@ -14,6 +15,10 @@ def install(Map options) {
 
   if (!options.find({ it -> it.key == 'cache' })) {
     options.cache = true
+  }
+
+  if (!options.cacheKey) {
+    options.cacheKey = ''
   }
 
   command = "${options.manager} install"
@@ -33,8 +38,8 @@ if [ -f '/tmp/${jobName}' ]; then old_hash=\$(cat '/tmp/${jobName}'); fi
 
 # calculate present hash & unzip archive if it exists
 hash=\$(cat ./package.json | sha256sum | awk -F ' ' '{ print \$1 }')
-archive_path=\"/tmp/${jobName}_\${hash}.tgz\"
-old_archive_path=\"/tmp/${jobName}_\${old_hash}.tgz\"
+archive_path=\"/tmp/${jobName}_${options.cacheKey}_\${hash}.tgz\"
+old_archive_path=\"/tmp/${jobName}_${options.cacheKey}_\${old_hash}.tgz\"
 if [ -f \"\$archive_path\" ]; then tar -xzf \"\$archive_path\" .; fi
 
 # run install command
@@ -50,7 +55,7 @@ fi
     } catch (Exception e) {
       command = """
 \$hash = (Get-FileHash -Path .\\package.json).Hash
-\$archivePath = \"${jobName}_\${env:TEMP}\${hash}.zip\"
+\$archivePath = \"${jobName}_${options.cacheKey}_\${env:TEMP}\${hash}.zip\"
 if (Test-Path -Path \"\$archivePath\" -PathType Leaf) {
  Expand-Archive -Path \"\$archivePath\" -DestinationPath .
 }
