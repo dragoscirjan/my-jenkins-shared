@@ -32,7 +32,7 @@ def install(Map options) {
 # clear files older than 15 days
 find /tmp -type f -iname \"${jobName}_*\" -mtime +14 | xargs rm -rf
 
-# find old hash
+# find old hashcacheKey
 old_hash=
 if [ -f '/tmp/${jobName}' ]; then old_hash=\$(cat '/tmp/${jobName}'); fi
 
