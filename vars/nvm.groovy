@@ -1,4 +1,3 @@
-
 def info() {
   try {
     sh """
@@ -22,7 +21,9 @@ def runSh(String command, String version = env ? env.NODE_VERSION_DEFAULT : null
   if (!version) {
     throw new Exception("No node version mentioned");
   }
-  sh """
+  try {
+    sh "uname > /dev/null"
+    sh """
 set +ex;
 export NVM_DIR="\$HOME/.nvm";
 [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh";
@@ -33,17 +34,15 @@ nvm use ${version};
 set -ex;
 ${command}
 """
+  } catch (Exception e) {
+    powershell """
+if ((Get-Command nvm).Command) {
+  nvm install ${version};
+  nvm use ${version};
 }
-
-def runPowershell(String command, String version = env ? env.NODE_VERSION_DEFAULT : null) {
-  if (!version) {
-    throw new Exception("No node version mentioned");
-  }
-  powershell """
-nvm install ${version};
-nvm use ${version};
 
 Set-PSDebug -Trace 1;
 ${command}
 """
+  }
 }

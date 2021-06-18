@@ -27,6 +27,7 @@ def install(Map options) {
 
   if (options.cache) {
     try {
+      // if not Linux this will trigger error
       sh "uname"
       command = """
 # clear files older than 15 days
@@ -87,12 +88,16 @@ Compress-Archive -Path .\\node_modules -DestinationPath \"\$archivePath\"
  *
  * @param gitCredentialsId     Credentials ID for github/gitlab, if you're publishing to npmjs.com
  * @param gitUrl               Git URL no http(s):// included.
- *                             i.e. 'gitlab-forensic.cellebrite.com/devops-rnd/shared-library.git'
+ *                             i.e. 'github.com/dragoscirjan/my-jenkins-shared.git'
+ * @param gitMessageIncludes   Default 'chore: release v'. If this message is met in the commit message, release
+ *                             command will abort, considering release has been performed already.
  * @param npmTokenCredentialId Default null. Credentials ID for npmjs.com token, if you're publishing to npmjs.com
  * @param noNpmPublish         Default false. Ignore the npm publish command
  * @param packageManager       Default 'npm'. Package manager to use.
  * @param releaseManager       Default 'release-it'. Release manager to use.
  * @param releaseItArgs        Default 'patch'. release-it command arguments. See release-it documentation.
+ * @param useNvm               Default: false. Whether to use nvm or not.
+ * @param nodeVersion          Default null. Nodejs version to use for nvm.runSh() method.
  *
  * Example of realease-it.json config:
  * <code>
@@ -122,8 +127,12 @@ def release(Map args) {
         throw new Exception('gitCredentialsId not mentioned')
     }
 
+    if (!args.gitMessageIncludes) {
+      args.gitMessageIncludes = "chore: release v"
+    }
+
     def commitMessage = git.lastCommitMessage()
-    if (commitMessage.indexOf("chore: release v") >= 0) {
+    if (commitMessage.indexOf(args.gitMessageIncludes) >= 0) {
         return
     }
 
@@ -193,18 +202,9 @@ npm publish;
       return
     }
 
-    try {
-        sh """
-set -ex
-${command}
-set +x
-"""
-    /* groovylint-disable-next-line CatchException */
-    } catch (Exception ex) {
-        powershell """
-Set-PSDebug -Trace 1;
-
-${command}
-"""
-    }
+  if (!args.useNvm) {
+    utils.runSh command
+  } else {
+    nvm.runSh command, args.nodeVersion
+  }
 }
