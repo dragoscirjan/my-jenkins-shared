@@ -93,7 +93,7 @@ Compress-Archive -Path .\\node_modules -DestinationPath \"\$archivePath\"
  * @param gitCredentialsId Credentials ID for github/gitlab, if you're publishing to npmjs.com
  * @param gitUrl Git URL no http(s):// included.
  *                             i.e. 'github.com/dragoscirjan/my-jenkins-shared.git'
- * @param gitMessageIncludes Default 'chore: release v'. If this message is met in the commit message, release
+ * @param gitMessageToInclude Default 'chore: release v'. If this message is met in the commit message, release
  *                             command will abort, considering release has been performed already.
  * @param npmTokenCredentialId Default null. Credentials ID for npmjs.com token, if you're publishing to npmjs.com
  * @param noNpmPublish Default false. Ignore the npm publish command
@@ -120,12 +120,12 @@ def release(Map options) {
     throw new Exception('gitCredentialsId not mentioned')
   }
 
-  if (!options.gitMessageIncludes) {
-    options.gitMessageIncludes = "chore: release v"
+  if (!options.gitMessageToInclude) {
+    options.gitMessageToInclude = "chore: release v"
   }
 
   def commitMessage = git.lastCommitMessage()
-  if (commitMessage.indexOf(options.gitMessageIncludes) >= 0) {
+  if (commitMessage.indexOf(options.gitMessageToInclude) >= 0) {
     return
   }
 
