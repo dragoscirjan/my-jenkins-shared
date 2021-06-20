@@ -136,7 +136,7 @@ def release(Map options) {
 
   if (options.npmTokenCredentialId) {
     withCredentials([
-      string(credentialsId: npmTokenCredentialId, variable: 'NPMJS_AUTH_TOKEN')
+      string(credentialsId: options.npmTokenCredentialId, variable: 'NPMJS_AUTH_TOKEN')
     ]) {
       command = """
 ${command}
